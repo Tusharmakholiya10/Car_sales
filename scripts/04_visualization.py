@@ -6,7 +6,7 @@ import mysql.connector
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="mypass",
+    password="Tushar@26",
     database="car_sales_db"
 )
 
@@ -36,4 +36,8 @@ plt.xticks(rotation=45)
 
 plt.tight_layout()
 
-plt.show()
+# plt.show()
+
+plt.savefig("output/top10_manufacturers.png")
+print("Chart saved successfully!")
+plt.close() 

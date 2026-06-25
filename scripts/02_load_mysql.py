@@ -8,7 +8,7 @@ df = pd.read_csv("data/car_sales_cleaned.csv")
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="mypass",
+    password="Tushar@26",
     database="car_sales_db"
 )
 
