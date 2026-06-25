@@ -19,9 +19,10 @@ ORDER BY total_sales DESC
 LIMIT 10;
 """
 
+
 df = pd.read_sql(query, conn)
 
-conn.close()
+
 
 # Create chart
 plt.figure(figsize=(10, 6))
@@ -40,4 +41,23 @@ plt.tight_layout()
 
 plt.savefig("output/top10_manufacturers.png")
 print("Chart saved successfully!")
-plt.close() 
+plt.close()
+
+query = """
+SELECT vehicle_type,
+       COUNT(*) AS count
+FROM car_sales
+GROUP BY vehicle_type;
+"""
+
+df = pd.read_sql(query, conn)
+
+plt.figure(figsize=(8,8))
+plt.pie(
+    df["count"],
+    labels=df["vehicle_type"],
+    autopct="%1.1f%%"
+)
+plt.title("Vehicle Type Distribution")
+plt.show()
+conn.close()
