@@ -9,7 +9,7 @@ conn = mysql.connector.connect(
     password="Tushar@26",
     database="car_sales_db"
 )
-#Top 10 Manufactures (Bar Chart)
+# (1)Top 10 Manufactures (Bar Chart)
 query = """
 SELECT manufacturer,
        ROUND(SUM(sales_in_thousands), 2) AS total_sales
@@ -41,7 +41,7 @@ print("Chart saved successfully!")
 plt.close()
 
 
-# (1)Vehicle Type Distribution  (Bar Chart)
+# (2)Vehicle Type Distribution  (Bar Chart)
 query = """
 SELECT vehicle_type,
        COUNT(*) AS count
@@ -60,7 +60,7 @@ plt.title("Vehicle Type Distribution")
 plt.show()
 
 
-# (2)Scatter Plot (Sales vs Price)
+# (3)Scatter Plot (Sales vs Price)
 query = """
 SELECT sales_in_thousands,
        price_in_thousands
@@ -80,7 +80,7 @@ plt.title("Price vs Sales")
 plt.show()
 
 
-
+#(4) Top 10 fuel Efficent Cars (Horizontal bar chart)
 query = """
 SELECT model,
        fuel_efficiency
@@ -98,5 +98,22 @@ plt.barh(
 )
 plt.title("Top 10 Fuel Efficient Cars")
 plt.show()
+
+
+# (5) Correlation Heatmap
+import seaborn as sns
+
+numeric_df = df.select_dtypes(include=["float64","int64"])
+
+plt.figure(figsize=(12,8))
+sns.heatmap(
+    numeric_df.corr(),
+    annot=True,
+    cmap="coolwarm"
+)
+plt.title("Correlation Matrix")
+plt.show()
+df = pd.read_sql(query, conn)
+
 
 conn.close()
