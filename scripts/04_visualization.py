@@ -9,7 +9,7 @@ conn = mysql.connector.connect(
     password="Tushar@26",
     database="car_sales_db"
 )
-
+#Top 10 Manufactures (Bar Chart)
 query = """
 SELECT manufacturer,
        ROUND(SUM(sales_in_thousands), 2) AS total_sales
@@ -18,8 +18,6 @@ GROUP BY manufacturer
 ORDER BY total_sales DESC
 LIMIT 10;
 """
-
-
 df = pd.read_sql(query, conn)
 
 
@@ -32,24 +30,24 @@ plt.bar(df["manufacturer"], df["total_sales"])
 plt.title("Top 10 Manufacturers by Sales")
 plt.xlabel("Manufacturer")
 plt.ylabel("Sales (Thousands)")
-
 plt.xticks(rotation=45)
 
 plt.tight_layout()
 
-# plt.show()
 
+# plt.show()
 plt.savefig("output/top10_manufacturers.png")
 print("Chart saved successfully!")
 plt.close()
 
+
+# (1)Vehicle Type Distribution  (Bar Chart)
 query = """
 SELECT vehicle_type,
        COUNT(*) AS count
 FROM car_sales
 GROUP BY vehicle_type;
 """
-
 df = pd.read_sql(query, conn)
 
 plt.figure(figsize=(8,8))
@@ -60,4 +58,45 @@ plt.pie(
 )
 plt.title("Vehicle Type Distribution")
 plt.show()
+
+
+# (2)Scatter Plot (Sales vs Price)
+query = """
+SELECT sales_in_thousands,
+       price_in_thousands
+FROM car_sales;
+"""
+df = pd.read_sql(query, conn)
+
+
+plt.figure(figsize=(8,5))
+plt.scatter(
+    df["price_in_thousands"],
+    df["sales_in_thousands"]
+)
+plt.xlabel("Price (Thousands)")
+plt.ylabel("Sales (Thousands)")
+plt.title("Price vs Sales")
+plt.show()
+
+
+
+query = """
+SELECT model,
+       fuel_efficiency
+FROM car_sales
+ORDER BY fuel_efficiency DESC
+LIMIT 10;
+"""
+df = pd.read_sql(query, conn)
+
+
+plt.figure(figsize=(10,5))
+plt.barh(
+    df["model"],
+    df["fuel_efficiency"]
+)
+plt.title("Top 10 Fuel Efficient Cars")
+plt.show()
+
 conn.close()
